@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Mock it like it's hot - Gabor Szakacs</title>
+
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/white.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/monokai.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<!-- Title -->
+			<section>
+				<h1>Mock it <br> like it's hot</h1>
+				<p>
+					<small>Gabor Szakacs</small>
+				</p>
+			</section>
+      <section data-markdown>
+        <textarea data-template>
+          ## Agenda
+
+          - What is mocking?
+          - When to mock? When not to mock?
+          - Different types of test doubles
+          - Make it testable by mocking (live coding)
+          - Get your hands dirty
+        </textarea>
+      </section>
+      <section data-markdown>
+        <textarea data-template>
+        ## What is mocking?
+
+        1. You're testing an object that has a dependency on another object (collaborates with it).<!-- .element: class="fragment" data-fragment-index="0" -->
+        1. For some reason you don't want to create and use a real object as a collaborator. <!-- .element: class="fragment" data-fragment-index="1" -->
+        1. You create a fake object that imitates the behavior of the collaborator.<!-- .element: class="fragment" data-fragment-index="2" -->
+        1. You replace the collaborator object with this fake one.<!-- .element: class="fragment" data-fragment-index="3" -->
+        </textarea>
+			</section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Naming conventions
+
+          - Mocks is an informal name for all types.<!-- .element: class="fragment" data-fragment-index="0" -->
+          - The formal name is <!-- .element: class="fragment" data-fragment-index="1" -->_test doubles_.
+        </textarea>
+      </section>
+
+			<section data-background="img/rock.jpg" data-background-size="contain"></section>
+			<section data-background="img/arnold.jpg" data-background-size="contain"></section>
+			<section data-background="img/tom-cruise-with-his-stunt-double.jpg" data-background-size="contain"></section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## How many types of test doubles are there?
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Types of test doubles
+
+          - Dummy
+          - Stub
+          - Fake
+          - Spy
+          - Mock
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Dummy
+
+          - You have to pass a collaborator, but it won't be used.
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Stub
+
+          - The behavior of the object under test depends on the value returned by the collaborator.
+          - You want to control this return value.
+          - To be used for Query methods.
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Fake
+
+          - A stub that has business logic in it.
+          - It can return different values based on the input.
+          - It can easily grow in complexity, probably needs their own tests.
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Spy
+
+          - The object under test modifies the state of the collaborator.
+          - Instead of verifying the new state, you verify that the right method was called with the right arguments.
+          - A Spy can record the calls (and arguments) it received.
+          - To be used for Command methods.
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Mock
+
+          - A spy that knows what calls were expected.
+          - It can verify itself.
+          - Used by mocking libraries.
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Mocking libraries
+
+          - Easy to generate mocks and set them up.
+          - They have their own DSL.
+          - The generated mocks are less readable.
+          - Too easy to generate mocks - can be overused.
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## When to mock?
+
+          - It would take a lot of time to use the real one
+          (network request, DB, file I/O, complex calculation) <!-- .element: class="fragment" data-fragment-index="0" -->
+          - Initializing the collaborator needs a lot of setup.<!-- .element: class="fragment" data-fragment-index="1" -->
+          - You want to easily control the response. (stub)<!-- .element: class="fragment" data-fragment-index="2" -->
+          - You want to easily check the sent message. (spy)<!-- .element: class="fragment" data-fragment-index="3" -->
+          - You want to isolate the unit and focus on that. 🤨<!-- .element: class="fragment" data-fragment-index="4" -->
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Drawbacks of mocking
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## It's easier to overlook integration issues
+        </textarea>
+      </section>
+
+      <section>
+        <iframe src='https://gfycat.com/ifr/BriefUniformHornet' frameborder='0' scrolling='no' allowfullscreen width='640' height='396'></iframe>
+      </section>
+
+			<section data-background="img/test-automation-pyramid.jpg" data-background-size="contain"></section>
+
+			<section data-markdown>
+        <textarea data-template>
+          ## Mocking introduces tight coupling to the internals of your unit
+
+          - Your tests start depending on the implementation details, not just the behavior of your code.<!-- .element: class="fragment" data-fragment-index="0" -->
+          - You can't refactor your code without modifying the tests.<!-- .element: class="fragment" data-fragment-index="1" -->
+          - 😢<!-- .element: class="fragment" data-fragment-index="2" -->
+        </textarea>
+      </section>
+
+			<section data-markdown>
+        <textarea data-template>
+          # Hands-on
+        </textarea>
+      </section>
+
+		</div>
+	</div>
+
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			transition: 'fade',
+			hash: true,
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js' }
+			]
+		});
+	</script>
+</body>
+
+</html>
